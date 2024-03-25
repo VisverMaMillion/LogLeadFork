@@ -85,7 +85,7 @@ class AnomalyDetection:
             if train:
                 # Check the datatype  
                 if column_data.dtypes[0]  == pl.datatypes.Utf8: #We get strs -> Use SKlearn Tokenizer
-                    self.vectorizer = vectorizer_class()
+                    self.vectorizer = vectorizer_class() 
                 elif column_data.dtypes[0]  == pl.datatypes.List(pl.datatypes.Utf8): #We get list of str, e.g. words -> Do not use Skelearn Tokinizer 
                     self.vectorizer = vectorizer_class(analyzer=lambda x: x)
                 X = self.vectorizer.fit_transform(events)
