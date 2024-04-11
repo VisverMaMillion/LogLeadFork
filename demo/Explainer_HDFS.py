@@ -91,6 +91,9 @@ sad.prepare_train_test_data()
 # ============================   
 
 # SHAPExplainer requires only the model, NNexplainer needs model and predictions
+# SHAPExplainer supported models:
+# LogisticRegression,LinearSVC, IsolationForest,DecisionTreeClassifier,
+# RandomForestClassifier, XGBClassifier
 sad.train_LR()
 df_seq = sad.predict()
 
@@ -98,7 +101,7 @@ df_seq = sad.predict()
 
 # Create a ShapExplainer object with trained anomaly detection object
 # By default doesn't run if too large dataset or too many feature names
-# This can be prevented by argumnet 
+# This can be prevented by argumnet ignore_warning=True
 ex1 = ex.ShapExplainer(sad, ignore_warning=True)
 
 # ShapExplainer can calculate shap values using calc_shapvalues method
@@ -126,10 +129,13 @@ featurenames = ex1.feature_names # shape (feature,)
 # if no existing data nor calculated shapvalues
 ex1.plot(plottype="summary")
 
-# A custom slice can be given to plot
+# A custom slice can be given to plot.
+# Slice calculates shap values again.
 ex1.plot(plottype="bar", custom_slice=slice(19,20))
 
 # After slice the data needs to be reset due to shapvalues also being sliced.
+# However, the values are much faster to calculate with smaller data so
+# sliced plots should be left last.
 X_test, labels_test = sad.test_data
 
 # The number of displayed features can be changed.
@@ -137,7 +143,8 @@ X_test, labels_test = sad.test_data
 ex1.plot(data=X_test,plottype="beeswarm", displayed=10)
 
 
-exit()
+
+
 
 # Get the test data for NNexplainer
 X_test, labels_test = sad.test_data
