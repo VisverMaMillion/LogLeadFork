@@ -101,7 +101,10 @@ df_seq = sad.predict()
 # Create a ShapExplainer object with trained anomaly detection object
 # By default doesn't run if too large dataset or too many feature names
 # This can be prevented by argumnet ignore_warning=True
-ex1 = ex.ShapExplainer(sad, ignore_warning=True)
+# When creating the object one can determine the length of truncated featurenames
+# unfortunately due to implementation this cannot be changed later.
+ex1 = ex.ShapExplainer(sad, ignore_warning=True, plot_featurename_len=18)
+
 
 # ShapExplainer can calculate shap values using calc_shapvalues method
 # This has two optional arguments: data, custom_slice
@@ -140,6 +143,13 @@ X_test, labels_test = sad.test_data
 # The number of displayed features can be changed.
 # These n features are also printed in terminal in correct order.
 ex1.plot(data=X_test,plottype="beeswarm", displayed=10)
+
+# To get the shap values in the order of most impactful to least (same order as sorted_featurenames)
+testvals = ex1.sorted_shapvalues()
+# Prints the shapvalues of First feature
+print(testvals[0])
+# dimension feature x data
+print(testvals.shape)
 
 # Get the test data for NNexplainer
 X_test, labels_test = sad.test_data
