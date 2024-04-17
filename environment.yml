@@ -1,4 +1,4 @@
-name: ll_with_dl
+name: LogFin
 channels:
   - defaults
 dependencies:
@@ -31,8 +31,8 @@ dependencies:
   - brotlipy=0.7.0=py39h27cfd23_1003
   - bzip2=1.0.8=h7b6447c_0
   - c-ares=1.19.1=h5eee18b_0
-  - ca-certificates=2023.08.22=h06a4308_0
-  - certifi=2023.7.22=py39h06a4308_0
+  - ca-certificates=2024.3.11=h06a4308_0
+  - certifi=2024.2.2=py39h06a4308_0
   - cffi=1.15.1=py39h5eee18b_3
   - charset-normalizer=2.0.4=pyhd3eb1b0_0
   - click=8.0.4=py39h06a4308_0
@@ -86,6 +86,8 @@ dependencies:
   - jedi=0.18.1=py39h06a4308_1
   - joblib=1.2.0=py39h06a4308_0
   - jpeg=9e=h5eee18b_1
+  - jsonschema=4.19.2=py39h06a4308_0
+  - jsonschema-specifications=2023.7.1=py39h06a4308_0
   - jupyter_client=8.1.0=py39h06a4308_0
   - jupyter_core=5.3.0=py39h06a4308_0
   - keras=2.4.3=hd3eb1b0_0
@@ -146,6 +148,7 @@ dependencies:
   - multiprocess=0.70.14=py39h06a4308_0
   - munkres=1.1.4=py_0
   - mysql=5.7.24=h721c034_2
+  - nbformat=5.9.2=py39h06a4308_0
   - ncurses=6.4=h6a678d5_0
   - nest-asyncio=1.5.6=py39h06a4308_0
   - numexpr=2.8.4=py39he184ba9_0
@@ -153,7 +156,7 @@ dependencies:
   - numpy-base=1.23.4=py39h31eccc5_0
   - oauthlib=3.2.2=py39h06a4308_0
   - openjpeg=2.4.0=h3ad879b_0
-  - openssl=3.0.12=h7f8727e_0
+  - openssl=3.0.13=h7f8727e_0
   - opt_einsum=3.3.0=pyhd3eb1b0_1
   - orc=1.7.4=hb3bc3d3_1
   - packaging=23.1=py39h06a4308_0
@@ -165,6 +168,7 @@ dependencies:
   - pillow=10.0.1=py39ha6cbd5a_0
   - pip=23.2.1=py39h06a4308_0
   - platformdirs=3.10.0=py39h06a4308_0
+  - plotly=5.19.0=py39h2f386ee_0
   - ply=3.11=py39h06a4308_0
   - pooch=1.4.0=pyhd3eb1b0_0
   - prompt-toolkit=3.0.36=py39h06a4308_0
@@ -186,6 +190,7 @@ dependencies:
   - pysocks=1.7.1=py39h06a4308_0
   - python=3.9.18=h955ad1f_0
   - python-dateutil=2.8.2=pyhd3eb1b0_0
+  - python-fastjsonschema=2.16.2=py39h06a4308_0
   - python-flatbuffers=2.0=pyhd3eb1b0_0
   - python-tzdata=2023.3=pyhd3eb1b0_0
   - python-xxhash=2.0.2=py39h5eee18b_1
@@ -195,10 +200,12 @@ dependencies:
   - qt-main=5.15.2=h53bd1ea_10
   - re2=2022.04.01=h295c915_0
   - readline=8.2=h5eee18b_0
+  - referencing=0.30.2=py39h06a4308_0
   - regex=2023.10.3=py39h5eee18b_0
   - requests=2.31.0=py39h06a4308_0
   - requests-oauthlib=1.3.0=py_0
   - responses=0.13.3=pyhd3eb1b0_0
+  - rpds-py=0.10.6=py39hb02cf49_0
   - rsa=4.7.2=pyhd3eb1b0_1
   - safetensors=0.3.2=py39hb02cf49_0
   - scikit-learn=1.3.0=py39h1128e8f_0
@@ -212,6 +219,7 @@ dependencies:
   - sqlite=3.41.2=h5eee18b_0
   - stack_data=0.2.0=pyhd3eb1b0_0
   - tbb=2021.8.0=hdb19cb5_0
+  - tenacity=8.2.2=py39h06a4308_0
   - tensorboard=2.12.1=py39h06a4308_0
   - tensorboard-data-server=0.7.0=py39h52d8a92_0
   - tensorboard-plugin-wit=1.8.1=py39h06a4308_0
@@ -247,8 +255,15 @@ dependencies:
   - zlib=1.2.13=h5eee18b_0
   - zstd=1.5.5=hc292b87_0
   - pip:
-    - cachetools==4.2.1
-    - drain3==0.9.11
-    - jsonpickle==1.5.1
-    - milksnake==0.1.6
-    - polars==0.19.8
+      - cachetools==4.2.1
+      - cloudpickle==3.0.0
+      - drain3==0.9.11
+      - jsonpickle==1.5.1
+      - llvmlite==0.42.0
+      - milksnake==0.1.6
+      - numba==0.59.1
+      - polars==0.19.8
+      - pynndescent==0.5.12
+      - shap==0.45.0
+      - slicer==0.0.7
+      - umap-learn==0.5.6

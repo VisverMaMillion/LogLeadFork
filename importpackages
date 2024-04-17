@@ -1,0 +1,6 @@
+pip:
+	shap
+	umap-learn
+no conda error:
+	plotly
+	nbformat
