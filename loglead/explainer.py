@@ -128,13 +128,14 @@ class ShapExplainer:
     models: Logistic Regression, Linear Support Vector Classifier, Decision Tree Classifier,
     Random Forest Classifier, Isolation Forest, and XGBoost Classifier.
     """
-    def __init__(self, sad, ignore_warning=False): 
+    def __init__(self, sad, ignore_warning=False, plot_featurename_len=16): 
         """Initializes the ShapExplainer class with the given anomaly detection object. The anomaly
         detection object should have the following attributes: model, X_train, X_test, and vectorizer.
 
         Args:
             sad (AnomalyDetection): The anomaly detection object used for predicting the anomalies.
-            ignore (bool, optional): Are warning about large dataset ignored. Defaults to False.
+            ignore_warning (bool, optional): Are warning about large dataset ignored. Defaults to False.
+            plot_featurename_len (int, optional): Sets the lenght of truncated featurename in plots. Defaults to 16.
         """
         self.model = sad.model
         self.X_train = sad.X_train
@@ -144,36 +145,38 @@ class ShapExplainer:
         self.Svals = None # SHAP values
         self.expl = None # Shap explainer
         self.istree =  False # Do we have tree model
+        self.truncatelen = plot_featurename_len # variable for lengt of truncated name
         self.func = self._scuffmapping() # Do the mapping of model in init
         self.shapdata = None # Contains the data used to calc shapvalues
         self.threshold = 1500 # How many features before warning, can be changed if needed
-
+        self.index = None # Sorted Indexes
+        
 
     def linear(self):
         """Creates a Linear ShapExplainer object with given train data.
         """
-        self.expl = shap.LinearExplainer(self.model, self.X_train, feature_names=self._truncatefn(16))
+        self.expl = shap.LinearExplainer(self.model, self.X_train, feature_names=self._truncatefn(self.truncatelen))
         return self.expl
 
     # should XGBoost be also a tree?
     def tree(self):
         """Creates a Tree ShapExplainer object with given train data.
         """
-        self.expl  = shap.TreeExplainer(self.model, data=self.X_train.toarray(), feature_names=self._truncatefn(16))
+        self.expl  = shap.TreeExplainer(self.model, data=self.X_train.toarray(), feature_names=self._truncatefn(self.truncatelen))
         return self.expl
 
 
     def kernel(self):
         """Creates a Kernel ShapExplainer object with given train data.
         """
-        self.expl = shap.KernelExplainer(self.model.predict, self.X_train, feature_names=self._truncatefn(16))
+        self.expl = shap.KernelExplainer(self.model.predict, self.X_train, feature_names=self._truncatefn(self.truncatelen))
         return self.expl
 
 
     def plain(self):
         """Creates a Standard ShapExplainer object with given anomaly detector.
         """
-        self.expl = shap.Explainer(self.model, feature_names=self._truncatefn(16))
+        self.expl = shap.Explainer(self.model, feature_names=self._truncatefn(self.truncatelen))
         return self.expl
 
 
@@ -260,6 +263,22 @@ class ShapExplainer:
             ndarray of str objects: Stored feature names.
         """
         return self.vec.get_feature_names_out()
+        
+
+    def sorted_shapvalues(self):
+    """ Can be used to get a sorted array of shap values. Sorted by feature importance.
+        Does not contain base value
+
+    Returns:
+        ndarray: ndarray of sorted shap values from most important to leas.
+    """
+    if self.Svals == None:
+        return None
+    if self.index is not None:
+        val = self.index
+    else:
+        val = np.argsort(np.sum(np.abs(self.Svals.values), axis=0))
+    return np.array([self.Svals.values[:,i] for i in val][::-1])
 
 
     def sorted_featurenames(self):
@@ -268,6 +287,7 @@ class ShapExplainer:
             list: Sorted feature names by SHAP importance.
         """
         val =  np.argsort(np.sum(np.abs(self.Svals.values), axis=0))
+        self.index = val 
         fn = self.vec.get_feature_names_out()
         return [fn[i] for i in val][::-1]
 
